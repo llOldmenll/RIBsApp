@@ -2,9 +2,18 @@ package com.example.testapp.presentation.splash
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.testapp.extensions.showErrorDialog
 
 /**
  * Top level view for {@link SplashBuilder.SplashScope}.
  */
-class SplashView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : View(context, attrs, defStyle), SplashInteractor.SplashPresenter
+class SplashView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : ConstraintLayout(context, attrs, defStyle), SplashInteractor.SplashPresenter {
+
+    override fun showError(error: Throwable, onDismiss: () -> Unit) =
+        showErrorDialog(error, onDismiss)
+}

@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.testapp.R
 import com.example.testapp.di.NetworkModule
+import com.example.testapp.presentation.splash.SplashBuilder
+import com.example.testapp.presentation.splash.SplashInteractor
 import com.uber.rib.core.InteractorBaseComponent
 import com.uber.rib.core.ViewBuilder
 import dagger.Binds
@@ -14,9 +16,9 @@ import javax.inject.Scope
 
 /**
  * Builder for the {@link RootScope}.
- *
  */
-class RootBuilder(dependency: ParentComponent) : ViewBuilder<RootView, RootRouter, RootBuilder.ParentComponent>(dependency) {
+class RootBuilder(dependency: ParentComponent) :
+    ViewBuilder<RootView, RootRouter, RootBuilder.ParentComponent>(dependency) {
 
     /**
      * Builds a new [RootRouter].
@@ -28,10 +30,10 @@ class RootBuilder(dependency: ParentComponent) : ViewBuilder<RootView, RootRoute
         val view = createView(parentViewGroup)
         val interactor = RootInteractor()
         val component = DaggerRootBuilder_Component.builder()
-                .parentComponent(dependency)
-                .view(view)
-                .interactor(interactor)
-                .build()
+            .parentComponent(dependency)
+            .view(view)
+            .interactor(interactor)
+            .build()
         return component.rootRouter()
     }
 
@@ -55,11 +57,16 @@ class RootBuilder(dependency: ParentComponent) : ViewBuilder<RootView, RootRoute
             @Provides
             @JvmStatic
             internal fun router(
-                    component: Component,
-                    view: RootView,
-                    interactor: RootInteractor): RootRouter {
-                return RootRouter(view, interactor, component)
-            }
+                component: Component,
+                view: RootView,
+                interactor: RootInteractor
+            ): RootRouter = RootRouter(view, interactor, component, SplashBuilder(component))
+
+            @RootScope
+            @Provides
+            @JvmStatic
+            internal fun splashListener(interactor: RootInteractor): SplashInteractor.Listener =
+                interactor.SplashListener()
         }
     }
 
@@ -68,7 +75,8 @@ class RootBuilder(dependency: ParentComponent) : ViewBuilder<RootView, RootRoute
         modules = [Module::class, NetworkModule::class],
         dependencies = [ParentComponent::class]
     )
-    interface Component : InteractorBaseComponent<RootInteractor>, BuilderComponent {
+    interface Component : InteractorBaseComponent<RootInteractor>, BuilderComponent,
+        SplashBuilder.ParentComponent {
 
         @dagger.Component.Builder
         interface Builder {

@@ -1,35 +1,65 @@
 package com.example.testapp.presentation.splash
 
+import com.example.domain.entity.station.Stations
+import com.example.domain.repository.StationRepository
+import com.example.domain.use_case.GetStationsUseCase
 import com.uber.rib.core.Bundle
 import com.uber.rib.core.Interactor
 import com.uber.rib.core.RibInteractor
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 /**
  * Coordinates Business Logic for [SplashScope].
- *
- * TODO describe the logic of this scope.
  */
 @RibInteractor
 class SplashInteractor : Interactor<SplashInteractor.SplashPresenter, SplashRouter>() {
 
-  @Inject
-  lateinit var presenter: SplashPresenter
+    @Inject
+    lateinit var presenter: SplashPresenter
+    @Inject
+    lateinit var getStationsUseCase: GetStationsUseCase
+    @Inject
+    lateinit var stationRepository: StationRepository
+    @Inject
+    lateinit var ribListener: Listener
 
-  override fun didBecomeActive(savedInstanceState: Bundle?) {
-    super.didBecomeActive(savedInstanceState)
+    private val compositeDisposable = CompositeDisposable()
 
-    // TODO: Add attachment logic here (RxSubscriptions, etc.).
-  }
+    override fun didBecomeActive(savedInstanceState: Bundle?) {
+        super.didBecomeActive(savedInstanceState)
 
-  override fun willResignActive() {
-    super.willResignActive()
+        loadStations()
+    }
 
-    // TODO: Perform any required clean up here, or delete this method entirely if not needed.
-  }
+    override fun willResignActive() {
+        compositeDisposable.clear()
+        super.willResignActive()
+    }
 
-  /**
-   * Presenter interface implemented by this RIB's view.
-   */
-  interface SplashPresenter
+    private fun loadStations() {
+        compositeDisposable.add(
+            getStationsUseCase.execute()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    ribListener.onStationsLoaded(it)
+                }, {
+                    presenter.showError(it) { loadStations() }
+                })
+        )
+    }
+
+    interface Listener {
+        fun onStationsLoaded(stations: Stations)
+    }
+
+    /**
+     * Presenter interface implemented by this RIB's view.
+     */
+    interface SplashPresenter {
+        fun showError(error: Throwable, onDismiss: () -> Unit)
+    }
 }

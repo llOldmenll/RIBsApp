@@ -1,23 +1,20 @@
 package com.example.data.network
 
-import okhttp3.OkHttpClient
-import retrofit2.CallAdapter
-import retrofit2.Converter
 import retrofit2.Retrofit
 
 class NetworkServiceFactoryImpl(
     private val baseUrl: String,
-    private val okHttpClient: OkHttpClient,
-    private val converterFactory: Converter.Factory,
-    private val callAdapterFactory: CallAdapter.Factory
+    private val okHttpClient: OkHttpClientFactory,
+    private val converterFactory: ConverterFactory,
+    private val callAdapterFactory: CallAdapterFactory
 ) : NetworkServiceFactory {
 
     private val retrofit by lazy {
         Retrofit.Builder()
-            .client(okHttpClient)
+            .client(okHttpClient.create())
             .baseUrl(baseUrl)
-            .addConverterFactory(converterFactory)
-            .addCallAdapterFactory(callAdapterFactory)
+            .addConverterFactory(converterFactory.create())
+            .addCallAdapterFactory(callAdapterFactory.create())
             .build()
     }
 
