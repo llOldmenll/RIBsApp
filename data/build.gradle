@@ -43,5 +43,14 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    // Type-safe HTTP client for Android and Java
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    // Serializer/deserializer
+    implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
+    // Adapter for RxJava and Retrofit
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
+    // Network logger
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.14.6'
+
     api project(path: ':domain')
 }

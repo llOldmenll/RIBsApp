@@ -3,6 +3,7 @@ package com.example.testapp.presentation.root
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.testapp.R
+import com.example.testapp.di.NetworkModule
 import com.uber.rib.core.InteractorBaseComponent
 import com.uber.rib.core.ViewBuilder
 import dagger.Binds
@@ -63,7 +64,10 @@ class RootBuilder(dependency: ParentComponent) : ViewBuilder<RootView, RootRoute
     }
 
     @RootScope
-    @dagger.Component(modules = [Module::class], dependencies = [ParentComponent::class])
+    @dagger.Component(
+        modules = [Module::class, NetworkModule::class],
+        dependencies = [ParentComponent::class]
+    )
     interface Component : InteractorBaseComponent<RootInteractor>, BuilderComponent {
 
         @dagger.Component.Builder

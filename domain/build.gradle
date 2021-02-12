@@ -4,10 +4,21 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_7
-    targetCompatibility = JavaVersion.VERSION_1_7
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 dependencies {
+    def mockito_version = '2.25.0'
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    // A library for composing asynchronous and event-based programs by using observable sequences
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.3.0'
+
+    testImplementation 'junit:junit:4.13.1'
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+    testImplementation "org.mockito:mockito-inline:$mockito_version"
+    testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
 }
