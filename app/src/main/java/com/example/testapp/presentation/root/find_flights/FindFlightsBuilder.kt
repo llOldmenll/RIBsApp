@@ -13,6 +13,8 @@ import com.example.domain.mapper.Mapper
 import com.example.domain.repository.FlightRepository
 import com.example.domain.use_case.GetFlightOptionsUseCase
 import com.example.testapp.R
+import com.example.testapp.presentation.root.find_flights.select_airport.SelectAirportBuilder
+import com.example.testapp.presentation.root.find_flights.select_airport.SelectAirportInteractor
 import com.uber.rib.core.InteractorBaseComponent
 import com.uber.rib.core.ViewBuilder
 import dagger.Binds
@@ -48,7 +50,7 @@ class FindFlightsBuilder(dependency: ParentComponent) :
 
     override fun inflateView(
         inflater: LayoutInflater,
-        parentViewGroup: ViewGroup
+        parentViewGroup: ViewGroup,
     ): FindFlightsView {
         return inflater.inflate(
             R.layout.find_flights_rib,
@@ -78,9 +80,12 @@ class FindFlightsBuilder(dependency: ParentComponent) :
             internal fun router(
                 component: Component,
                 view: FindFlightsView,
-                interactor: FindFlightsInteractor
+                interactor: FindFlightsInteractor,
             ): FindFlightsRouter {
-                return FindFlightsRouter(view, interactor, component)
+                return FindFlightsRouter(view,
+                    interactor,
+                    component,
+                    SelectAirportBuilder(component))
             }
 
             @FindFlightsScope
@@ -88,7 +93,7 @@ class FindFlightsBuilder(dependency: ParentComponent) :
             @JvmStatic
             internal fun flightNetworkService(
                 @Named("prod")
-                networkServiceFactory: NetworkServiceFactory
+                networkServiceFactory: NetworkServiceFactory,
             ): FlightNetworkService = networkServiceFactory.create(FlightNetworkService::class.java)
 
             @FindFlightsScope
@@ -102,16 +107,23 @@ class FindFlightsBuilder(dependency: ParentComponent) :
             @JvmStatic
             internal fun flightRepository(
                 flightNetworkService: FlightNetworkService,
-                flightsAvailabilityMapper: Mapper<FlightsAvailabilityEntity, FlightOptions>
-            ): FlightRepository = FlightRepositoryImpl(flightNetworkService, flightsAvailabilityMapper)
+                flightsAvailabilityMapper: Mapper<FlightsAvailabilityEntity, FlightOptions>,
+            ): FlightRepository =
+                FlightRepositoryImpl(flightNetworkService, flightsAvailabilityMapper)
 
             @FindFlightsScope
             @Provides
             @JvmStatic
             internal fun getFlightOptionsUseCase(
-                flightRepository: FlightRepository
+                flightRepository: FlightRepository,
             ): GetFlightOptionsUseCase = GetFlightOptionsUseCase(flightRepository)
 
+            @FindFlightsScope
+            @Provides
+            @JvmStatic
+            internal fun selectAirportListener(
+                interactor: FindFlightsInteractor,
+            ): SelectAirportInteractor.Listener = interactor.SelectAirportListener()
         }
     }
 
@@ -120,7 +132,8 @@ class FindFlightsBuilder(dependency: ParentComponent) :
         modules = [Module::class],
         dependencies = [ParentComponent::class]
     )
-    interface Component : InteractorBaseComponent<FindFlightsInteractor>, BuilderComponent {
+    interface Component : InteractorBaseComponent<FindFlightsInteractor>, BuilderComponent,
+        SelectAirportBuilder.ParentComponent {
 
         @dagger.Component.Builder
         interface Builder {

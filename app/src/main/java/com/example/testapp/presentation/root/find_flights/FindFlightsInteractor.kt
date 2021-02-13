@@ -1,9 +1,11 @@
 package com.example.testapp.presentation.root.find_flights
 
 import com.example.domain.entity.request.GetAvailableFlightsRequest
+import com.example.domain.entity.station.StationDescription
 import com.example.domain.use_case.GetFlightOptionsUseCase
 import com.example.testapp.presentation.root.find_flights.entities.AirPortType
 import com.example.testapp.presentation.root.find_flights.entities.AirPortType.*
+import com.example.testapp.presentation.root.find_flights.select_airport.SelectAirportInteractor
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.uber.rib.core.Bundle
 import com.uber.rib.core.Interactor
@@ -23,7 +25,6 @@ class FindFlightsInteractor :
 
     @Inject
     lateinit var presenter: FindFlightsPresenter
-
     @Inject
     lateinit var getFlightOptionsUseCase: GetFlightOptionsUseCase
 
@@ -54,9 +55,9 @@ class FindFlightsInteractor :
     }
 
     private fun updateSearchFlightsParams() {
+        updateOrigin()
+        updateDestination()
         searchFlightsRequest.apply {
-            presenter.updateOrigin(origin)
-            presenter.updateDestination(destination)
             presenter.updateDateOut(dateOut)
             passengers.apply { presenter.updatePassengers(adults, teens, children) }
         }
@@ -75,13 +76,42 @@ class FindFlightsInteractor :
 
     private fun selectAirPort(type: AirPortType) = router.attachSelectAirPortScreen(type)
 
+    private fun updateOrigin() =
+        searchFlightsRequest.apply { presenter.updateOrigin(originCity, originCode) }
+
+    private fun updateDestination() =
+        searchFlightsRequest.apply { presenter.updateDestination(destinationCity, destinationCode) }
+
+    inner class SelectAirportListener : SelectAirportInteractor.Listener {
+        override fun onClose() = router.detachCurrentChild()
+
+        override fun onAirPortSelected(
+            airPortType: AirPortType,
+            stationDescription: StationDescription,
+        ) {
+            if (airPortType == ORIGIN) {
+                searchFlightsRequest.apply {
+                    originCity = stationDescription.name
+                    originCode = stationDescription.code
+                }
+                updateOrigin()
+            } else {
+                searchFlightsRequest.apply {
+                    destinationCity = stationDescription.name
+                    destinationCode = stationDescription.code
+                }
+                updateDestination()
+            }
+        }
+    }
+
     /**
      * Presenter interface implemented by this RIB's view.
      */
     interface FindFlightsPresenter {
         fun showError(error: Throwable)
-        fun updateOrigin(origin: String)
-        fun updateDestination(destination: String)
+        fun updateOrigin(city: String, code: String)
+        fun updateDestination(city: String, code: String)
         fun updateDateOut(date: String)
         fun updatePassengers(adults: Int, teens: Int, children: Int)
 

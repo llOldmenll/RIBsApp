@@ -19,7 +19,7 @@ import java.lang.StringBuilder
 class FindFlightsView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyle: Int = 0
+    defStyle: Int = 0,
 ) : ConstraintLayout(context, attrs, defStyle), FindFlightsInteractor.FindFlightsPresenter {
 
     private val compositeDisposable = CompositeDisposable()
@@ -39,12 +39,14 @@ class FindFlightsView @JvmOverloads constructor(
 
     override fun showError(error: Throwable) = showErrorDialog(error) {}
 
-    override fun updateOrigin(origin: String) {
-        vOrigin.text = origin
+    override fun updateOrigin(city: String, code: String) {
+        vOrigin.text = city
+        vOriginCode.text = code
     }
 
-    override fun updateDestination(destination: String) {
-        vDestination.text = destination
+    override fun updateDestination(city: String, code: String) {
+        vDestination.text = city
+        vDestinationCode.text = code
     }
 
     override fun updateDateOut(date: String) {
@@ -59,9 +61,11 @@ class FindFlightsView @JvmOverloads constructor(
 
     override fun searchAbilityState(): BehaviorRelay<Boolean> = searchAbilityStatePublisher
 
-    override fun onChooseOrigin(): Observable<Any> = RxView.clicks(vOrigin)
+    override fun onChooseOrigin(): Observable<Any> =
+        RxView.clicks(vOrigin).mergeWith(RxView.clicks(vOriginCode))
 
-    override fun onChooseDestination(): Observable<Any> = RxView.clicks(vDestination)
+    override fun onChooseDestination(): Observable<Any> =
+        RxView.clicks(vDestination).mergeWith(RxView.clicks(vDestinationCode))
 
     override fun onChooseDate(): Observable<Any> = RxView.clicks(vDepartureDate)
 
@@ -102,7 +106,7 @@ class FindFlightsView @JvmOverloads constructor(
         years: Int,
         @StringRes typeNameSingular: Int,
         @StringRes typeNamePlural: Int,
-        @StringRes ageDescription: Int
+        @StringRes ageDescription: Int,
     ): String {
         if (years < 1) return ""
 

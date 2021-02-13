@@ -10,13 +10,13 @@ import io.reactivex.Single
 
 class FlightRepositoryImpl(
     private val flightNetworkService: FlightNetworkService,
-    private val flightsAvailabilityMapper: Mapper<FlightsAvailabilityEntity, FlightOptions>
+    private val flightsAvailabilityMapper: Mapper<FlightsAvailabilityEntity, FlightOptions>,
 ) : FlightRepository {
 
     override fun getAvailableFlights(request: GetAvailableFlightsRequest): Single<FlightOptions> {
         return flightNetworkService.getAvailableFlights(
-            request.origin,
-            request.destination,
+            request.originCode,
+            request.destinationCode,
             request.dateOut,
             request.passengers.adults,
             request.passengers.teens,

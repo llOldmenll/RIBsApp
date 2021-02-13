@@ -2,7 +2,9 @@ package com.example.testapp.presentation.root.find_flights.select_airport
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.example.domain.entity.station.Stations
 import com.example.testapp.R
+import com.example.testapp.presentation.root.find_flights.entities.AirPortType
 import com.uber.rib.core.InteractorBaseComponent
 import com.uber.rib.core.ViewBuilder
 import dagger.Binds
@@ -13,8 +15,6 @@ import javax.inject.Scope
 
 /**
  * Builder for the {@link SelectAirportScope}.
- *
- * TODO describe this scope's responsibility as a whole.
  */
 class SelectAirportBuilder(dependency: ParentComponent) :
     ViewBuilder<SelectAirportView, SelectAirportRouter, SelectAirportBuilder.ParentComponent>(
@@ -27,20 +27,21 @@ class SelectAirportBuilder(dependency: ParentComponent) :
      * @param parentViewGroup parent view group that this router's view will be added to.
      * @return a new [SelectAirportRouter].
      */
-    fun build(parentViewGroup: ViewGroup): SelectAirportRouter {
+    fun build(parentViewGroup: ViewGroup, airPortType: AirPortType): SelectAirportRouter {
         val view = createView(parentViewGroup)
         val interactor = SelectAirportInteractor()
         val component = DaggerSelectAirportBuilder_Component.builder()
             .parentComponent(dependency)
             .view(view)
             .interactor(interactor)
+            .airPortType(airPortType)
             .build()
         return component.selectairportRouter()
     }
 
     override fun inflateView(
         inflater: LayoutInflater,
-        parentViewGroup: ViewGroup
+        parentViewGroup: ViewGroup,
     ): SelectAirportView {
         return inflater.inflate(
             R.layout.select_airport_rib,
@@ -50,7 +51,8 @@ class SelectAirportBuilder(dependency: ParentComponent) :
     }
 
     interface ParentComponent {
-        // TODO: Define dependencies required from your parent interactor here.
+        fun stations(): Stations
+        fun selectAirPortListener(): SelectAirportInteractor.Listener
     }
 
     @dagger.Module
@@ -69,13 +71,9 @@ class SelectAirportBuilder(dependency: ParentComponent) :
             internal fun router(
                 component: Component,
                 view: SelectAirportView,
-                interactor: SelectAirportInteractor
-            ): SelectAirportRouter {
-                return SelectAirportRouter(view, interactor, component)
-            }
+                interactor: SelectAirportInteractor,
+            ): SelectAirportRouter = SelectAirportRouter(view, interactor, component)
         }
-
-        // TODO: Create provider methods for dependencies created by this Rib. These should be static.
     }
 
     @SelectAirportScope
@@ -92,6 +90,9 @@ class SelectAirportBuilder(dependency: ParentComponent) :
 
             @BindsInstance
             fun view(view: SelectAirportView): Builder
+
+            @BindsInstance
+            fun airPortType(airPortType: AirPortType): Builder
 
             fun parentComponent(component: ParentComponent): Builder
             fun build(): Component

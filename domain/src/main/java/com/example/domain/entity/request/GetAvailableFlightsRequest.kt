@@ -1,11 +1,13 @@
 package com.example.domain.entity.request
 
 data class GetAvailableFlightsRequest(
-    var origin: String = "",
-    var destination: String = "",
+    var originCity: String = "",
+    var originCode: String = "",
+    var destinationCity: String = "",
+    var destinationCode: String = "",
     var dateOut: String = "",
-    var passengers: PassengersRequest = PassengersRequest()
+    var passengers: PassengersRequest = PassengersRequest(),
 ) {
     fun isValid(): Boolean =
-        origin.isNotBlank() && destination.isNotBlank() && dateOut.isNotBlank() && passengers.isValid()
+        originCode.isNotBlank() && destinationCode.isNotBlank() && dateOut.isNotBlank() && passengers.isValid()
 }

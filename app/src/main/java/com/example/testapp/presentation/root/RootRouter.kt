@@ -42,4 +42,6 @@ class RootRouter(
             currentChild = null
         }
     }
+
+    override fun handleBackPress(): Boolean = currentChild?.handleBackPress() ?: false
 }

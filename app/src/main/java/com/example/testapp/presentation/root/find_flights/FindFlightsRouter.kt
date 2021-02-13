@@ -3,6 +3,7 @@ package com.example.testapp.presentation.root.find_flights
 import com.example.domain.entity.flight.FlightOptions
 import com.example.domain.entity.request.PassengersRequest
 import com.example.testapp.presentation.root.find_flights.entities.AirPortType
+import com.example.testapp.presentation.root.find_flights.select_airport.SelectAirportBuilder
 import com.uber.rib.core.Router
 import com.uber.rib.core.ViewRouter
 
@@ -12,7 +13,8 @@ import com.uber.rib.core.ViewRouter
 class FindFlightsRouter(
     view: FindFlightsView,
     interactor: FindFlightsInteractor,
-    component: FindFlightsBuilder.Component
+    component: FindFlightsBuilder.Component,
+    private val selectAirportBuilder: SelectAirportBuilder,
 ) : ViewRouter<FindFlightsView, FindFlightsInteractor, FindFlightsBuilder.Component>(
     view,
     interactor,
@@ -22,7 +24,11 @@ class FindFlightsRouter(
     private var currentChild: Router<*, *>? = null
 
     fun attachSelectAirPortScreen(airPortType: AirPortType) {
-        // TODO: Add SelectAirPort RIB attachment
+        currentChild = selectAirportBuilder.build(view, airPortType).let {
+            attachChild(it)
+            view.addView(it.view)
+            it
+        }
     }
 
     fun attachSelectDateScreen() {
@@ -44,4 +50,6 @@ class FindFlightsRouter(
             currentChild = null
         }
     }
+
+    override fun handleBackPress(): Boolean = currentChild?.handleBackPress() ?: false
 }
