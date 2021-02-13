@@ -31,10 +31,6 @@ class FindFlightsRouter(
         }
     }
 
-    fun attachSelectDateScreen() {
-        // TODO: Add SelectDate RIB attachment
-    }
-
     fun attachSelectPassengersScreen(passengersRequest: PassengersRequest) {
         // TODO: Add SelectPassengers RIB attachment
     }

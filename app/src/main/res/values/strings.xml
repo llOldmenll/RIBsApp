@@ -27,4 +27,5 @@
     <string name="child_age">2–11 years</string>
 
     <string name="search_city_or_airport">Search city or airport</string>
+    <string name="select_your_date">Select your date</string>
 </resources>

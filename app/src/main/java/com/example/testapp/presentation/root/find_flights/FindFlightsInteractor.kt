@@ -3,6 +3,8 @@ package com.example.testapp.presentation.root.find_flights
 import com.example.domain.entity.request.GetAvailableFlightsRequest
 import com.example.domain.entity.station.StationDescription
 import com.example.domain.use_case.GetFlightOptionsUseCase
+import com.example.domain.utils.toDate
+import com.example.domain.utils.toFormattedDate
 import com.example.testapp.presentation.root.find_flights.entities.AirPortType
 import com.example.testapp.presentation.root.find_flights.entities.AirPortType.*
 import com.example.testapp.presentation.root.find_flights.select_airport.SelectAirportInteractor
@@ -14,6 +16,8 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.util.Calendar
+import java.util.Date
 import javax.inject.Inject
 
 /**
@@ -25,8 +29,14 @@ class FindFlightsInteractor :
 
     @Inject
     lateinit var presenter: FindFlightsPresenter
+
     @Inject
     lateinit var getFlightOptionsUseCase: GetFlightOptionsUseCase
+
+    companion object {
+        private const val REQUEST_DATE_FORMAT = "yyyy-MM-dd"
+        private const val PREVIEW_DATE_FORMAT = "dd MMMM YYYY"
+    }
 
     private val compositeDisposable = CompositeDisposable()
     private val searchFlightsRequest = GetAvailableFlightsRequest()
@@ -47,10 +57,14 @@ class FindFlightsInteractor :
         compositeDisposable.addAll(
             presenter.onChooseOrigin().subscribe { selectAirPort(ORIGIN) },
             presenter.onChooseDestination().subscribe { selectAirPort(DESTINATION) },
-            presenter.onChooseDate().subscribe { router.attachSelectDateScreen() },
+            presenter.onChooseDate().subscribe { presenter.selectDate(getChosenDate()) },
+            presenter.onSearchFlights().subscribe { searchFlights() },
             presenter.onSelectPassengers()
                 .subscribe { router.attachSelectPassengersScreen(searchFlightsRequest.passengers) },
-            presenter.onSearchFlights().subscribe { searchFlights() }
+            presenter.onDateSelected().subscribe {
+                searchFlightsRequest.dateOut = it.toFormattedDate(REQUEST_DATE_FORMAT)
+                presenter.updateDateOut(it.toFormattedDate(PREVIEW_DATE_FORMAT))
+            }
         )
     }
 
@@ -82,6 +96,11 @@ class FindFlightsInteractor :
     private fun updateDestination() =
         searchFlightsRequest.apply { presenter.updateDestination(destinationCity, destinationCode) }
 
+    private fun getChosenDate(): Date {
+        return if (searchFlightsRequest.dateOut.isBlank()) Calendar.getInstance().time
+        else searchFlightsRequest.dateOut.toDate(REQUEST_DATE_FORMAT)
+    }
+
     inner class SelectAirportListener : SelectAirportInteractor.Listener {
         override fun onClose() = router.detachCurrentChild()
 
@@ -110,6 +129,7 @@ class FindFlightsInteractor :
      */
     interface FindFlightsPresenter {
         fun showError(error: Throwable)
+        fun selectDate(chosenDate: Date)
         fun updateOrigin(city: String, code: String)
         fun updateDestination(city: String, code: String)
         fun updateDateOut(date: String)
@@ -123,5 +143,6 @@ class FindFlightsInteractor :
         fun onChooseDate(): Observable<Any>
         fun onSelectPassengers(): Observable<Any>
         fun onSearchFlights(): Observable<Any>
+        fun onDateSelected(): Observable<Date>
     }
 }

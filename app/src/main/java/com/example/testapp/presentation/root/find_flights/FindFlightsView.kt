@@ -1,5 +1,6 @@
 package com.example.testapp.presentation.root.find_flights
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.StringRes
@@ -8,10 +9,12 @@ import com.example.testapp.R
 import com.example.testapp.extensions.showErrorDialog
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxrelay2.BehaviorRelay
+import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.find_flights_rib.view.*
-import java.lang.StringBuilder
+import java.util.Date
+import java.util.Calendar
 
 /**
  * Top level view for {@link FindFlightsBuilder.FindFlightsScope}.
@@ -19,12 +22,13 @@ import java.lang.StringBuilder
 class FindFlightsView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyle: Int = 0,
+    defStyle: Int = 0
 ) : ConstraintLayout(context, attrs, defStyle), FindFlightsInteractor.FindFlightsPresenter {
 
     private val compositeDisposable = CompositeDisposable()
     private val progressVisibilityPublisher = BehaviorRelay.createDefault(false)
     private val searchAbilityStatePublisher = BehaviorRelay.createDefault(false)
+    private val dateSelectedPublisher = PublishRelay.create<Date>()
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -38,6 +42,18 @@ class FindFlightsView @JvmOverloads constructor(
     }
 
     override fun showError(error: Throwable) = showErrorDialog(error) {}
+
+    override fun selectDate(chosenDate: Date) {
+        val chosenCalendar = Calendar.getInstance().apply { time = chosenDate }
+        val pickerDialog = DatePickerDialog(
+            context,
+            { _, year, monthOfYear, dayOfMonth -> publishNewDate(year, monthOfYear, dayOfMonth) },
+            chosenCalendar.get(Calendar.YEAR),
+            chosenCalendar.get(Calendar.MONTH),
+            chosenCalendar.get(Calendar.DAY_OF_MONTH))
+        pickerDialog.datePicker.minDate = Calendar.getInstance().timeInMillis
+        pickerDialog.show()
+    }
 
     override fun updateOrigin(city: String, code: String) {
         vOrigin.text = city
@@ -73,12 +89,20 @@ class FindFlightsView @JvmOverloads constructor(
 
     override fun onSearchFlights(): Observable<Any> = RxView.clicks(vSearchFlights)
 
+    override fun onDateSelected(): Observable<Date> = dateSelectedPublisher
+
     private fun setupRx() {
         compositeDisposable.addAll(
             progressVisibilityPublisher.subscribe {
                 vProgress.visibility = if (it) VISIBLE else GONE
             },
             searchAbilityStatePublisher.subscribe { vSearchFlights.isEnabled = it }
+        )
+    }
+
+    private fun publishNewDate(year: Int, monthOfYear: Int, dayOfMonth: Int) {
+        dateSelectedPublisher.accept(
+            Calendar.getInstance().apply { set(year, monthOfYear, dayOfMonth) }.time
         )
     }
 

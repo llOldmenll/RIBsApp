@@ -6,7 +6,7 @@ data class GetAvailableFlightsRequest(
     var destinationCity: String = "",
     var destinationCode: String = "",
     var dateOut: String = "",
-    var passengers: PassengersRequest = PassengersRequest(),
+    var passengers: PassengersRequest = PassengersRequest()
 ) {
     fun isValid(): Boolean =
         originCode.isNotBlank() && destinationCode.isNotBlank() && dateOut.isNotBlank() && passengers.isValid()
