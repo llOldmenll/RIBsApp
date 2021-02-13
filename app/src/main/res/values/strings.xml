@@ -3,4 +3,25 @@
 
     <string name="splash_screen_title">Test\nApplication</string>
     <string name="error">Error</string>
+    <string name="find_flights">Find Flights</string>
+    <string name="from">From</string>
+    <string name="flying_from">Where are you flying from?</string>
+    <string name="to">To</string>
+    <string name="going_to">Where are you going?</string>
+    <string name="fly_out">Fly Out</string>
+    <string name="select_date">Select Date</string>
+    <string name="passengers">Passengers</string>
+    <string name="lets_go">Let\'s go</string>
+
+    <string name="adult">Adult</string>
+    <string name="adults">Adults</string>
+    <string name="adult_age">16+ years</string>
+
+    <string name="teen">Teen</string>
+    <string name="teens">Teens</string>
+    <string name="teen_age">12–15 years</string>
+
+    <string name="child">Child</string>
+    <string name="children">Children</string>
+    <string name="child_age">2–11 years</string>
 </resources>

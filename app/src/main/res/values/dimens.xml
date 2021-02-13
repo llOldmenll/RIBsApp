@@ -6,6 +6,7 @@
     <dimen name="view_padding_min">8dp</dimen>
     <dimen name="view_padding_min_plus">12dp</dimen>
     <dimen name="view_padding_medium">16dp</dimen>
+    <dimen name="view_padding_large">24dp</dimen>
     <dimen name="view_padding_big">32dp</dimen>
     <dimen name="view_padding_big_plus">42dp</dimen>
 
@@ -20,6 +21,7 @@
     <dimen name="text_size_medium">14sp</dimen>
     <dimen name="text_size_big">16sp</dimen>
     <dimen name="text_size_large">18sp</dimen>
+    <dimen name="text_size_large_plus">20sp</dimen>
     <dimen name="text_size_huge">24sp</dimen>
     <dimen name="text_size_huge_plus">36sp</dimen>
     <dimen name="text_size_48">48sp</dimen>
@@ -51,4 +53,6 @@
     <dimen name="article_image_height_landscape">152dp</dimen>
     <dimen name="tiny_image_size">18dp</dimen>
     <dimen name="corner_radius">16dp</dimen>
+
+    <dimen name="dashed_line_width">3dp</dimen>
 </resources>

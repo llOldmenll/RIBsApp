@@ -36,6 +36,7 @@ class RootInteractor : Interactor<RootInteractor.RootPresenter, RootRouter>() {
     inner class SplashListener : SplashInteractor.Listener {
         override fun onStationsLoaded(stations: Stations) {
             router.detachCurrentChild()
+            router.attachFindFlightsScreen(stations)
         }
     }
 }

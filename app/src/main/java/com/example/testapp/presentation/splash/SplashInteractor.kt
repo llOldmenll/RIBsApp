@@ -1,7 +1,6 @@
 package com.example.testapp.presentation.splash
 
 import com.example.domain.entity.station.Stations
-import com.example.domain.repository.StationRepository
 import com.example.domain.use_case.GetStationsUseCase
 import com.uber.rib.core.Bundle
 import com.uber.rib.core.Interactor
@@ -21,8 +20,6 @@ class SplashInteractor : Interactor<SplashInteractor.SplashPresenter, SplashRout
     lateinit var presenter: SplashPresenter
     @Inject
     lateinit var getStationsUseCase: GetStationsUseCase
-    @Inject
-    lateinit var stationRepository: StationRepository
     @Inject
     lateinit var ribListener: Listener
 

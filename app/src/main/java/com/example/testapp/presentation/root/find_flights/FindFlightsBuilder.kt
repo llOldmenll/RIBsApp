@@ -2,19 +2,28 @@ package com.example.testapp.presentation.root.find_flights
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.example.data.entity.flight.FlightsAvailabilityEntity
+import com.example.data.network.NetworkServiceFactory
+import com.example.data.network.mapper.FlightsAvailabilityEntityToFlightOptionsMapper
+import com.example.data.network.service.FlightNetworkService
+import com.example.data.repository.FlightRepositoryImpl
+import com.example.domain.entity.flight.FlightOptions
+import com.example.domain.entity.station.Stations
+import com.example.domain.mapper.Mapper
+import com.example.domain.repository.FlightRepository
+import com.example.domain.use_case.GetFlightOptionsUseCase
 import com.example.testapp.R
 import com.uber.rib.core.InteractorBaseComponent
 import com.uber.rib.core.ViewBuilder
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Provides
+import javax.inject.Named
 import javax.inject.Qualifier
 import javax.inject.Scope
 
 /**
  * Builder for the {@link FindFlightsScope}.
- *
- * TODO describe this scope's responsibility as a whole.
  */
 class FindFlightsBuilder(dependency: ParentComponent) :
     ViewBuilder<FindFlightsView, FindFlightsRouter, FindFlightsBuilder.ParentComponent>(dependency) {
@@ -25,13 +34,14 @@ class FindFlightsBuilder(dependency: ParentComponent) :
      * @param parentViewGroup parent view group that this router's view will be added to.
      * @return a new [FindFlightsRouter].
      */
-    fun build(parentViewGroup: ViewGroup): FindFlightsRouter {
+    fun build(parentViewGroup: ViewGroup, stations: Stations): FindFlightsRouter {
         val view = createView(parentViewGroup)
         val interactor = FindFlightsInteractor()
         val component = DaggerFindFlightsBuilder_Component.builder()
             .parentComponent(dependency)
             .view(view)
             .interactor(interactor)
+            .stations(stations)
             .build()
         return component.findflightsRouter()
     }
@@ -48,7 +58,8 @@ class FindFlightsBuilder(dependency: ParentComponent) :
     }
 
     interface ParentComponent {
-        // TODO: Define dependencies required from your parent interactor here.
+        @Named("prod")
+        fun prodNetworkServiceFactory(): NetworkServiceFactory
     }
 
     @dagger.Module
@@ -71,9 +82,37 @@ class FindFlightsBuilder(dependency: ParentComponent) :
             ): FindFlightsRouter {
                 return FindFlightsRouter(view, interactor, component)
             }
-        }
 
-        // TODO: Create provider methods for dependencies created by this Rib. These should be static.
+            @FindFlightsScope
+            @Provides
+            @JvmStatic
+            internal fun flightNetworkService(
+                @Named("prod")
+                networkServiceFactory: NetworkServiceFactory
+            ): FlightNetworkService = networkServiceFactory.create(FlightNetworkService::class.java)
+
+            @FindFlightsScope
+            @Provides
+            @JvmStatic
+            internal fun flightsAvailabilityMapper(): Mapper<FlightsAvailabilityEntity, FlightOptions> =
+                FlightsAvailabilityEntityToFlightOptionsMapper()
+
+            @FindFlightsScope
+            @Provides
+            @JvmStatic
+            internal fun flightRepository(
+                flightNetworkService: FlightNetworkService,
+                flightsAvailabilityMapper: Mapper<FlightsAvailabilityEntity, FlightOptions>
+            ): FlightRepository = FlightRepositoryImpl(flightNetworkService, flightsAvailabilityMapper)
+
+            @FindFlightsScope
+            @Provides
+            @JvmStatic
+            internal fun getFlightOptionsUseCase(
+                flightRepository: FlightRepository
+            ): GetFlightOptionsUseCase = GetFlightOptionsUseCase(flightRepository)
+
+        }
     }
 
     @FindFlightsScope
@@ -90,6 +129,9 @@ class FindFlightsBuilder(dependency: ParentComponent) :
 
             @BindsInstance
             fun view(view: FindFlightsView): Builder
+
+            @BindsInstance
+            fun stations(stations: Stations): Builder
 
             fun parentComponent(component: ParentComponent): Builder
             fun build(): Component

@@ -1,7 +1,5 @@
 package com.example.testapp.presentation.splash
 
-import android.view.View
-
 import com.uber.rib.core.ViewRouter
 
 /**

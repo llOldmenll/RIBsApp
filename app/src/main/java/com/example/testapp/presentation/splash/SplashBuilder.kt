@@ -3,11 +3,7 @@ package com.example.testapp.presentation.splash
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.data.entity.station.StationsEntity
-import com.example.data.network.OkHttpClientFactory
-import com.example.data.network.ConverterFactory
-import com.example.data.network.CallAdapterFactory
 import com.example.data.network.NetworkServiceFactory
-import com.example.data.network.NetworkServiceFactoryImpl
 import com.example.data.network.mapper.StationEntityToStationMapper
 import com.example.data.network.mapper.StationsEntityToStationsMapper
 import com.example.data.network.service.StationNetworkService
@@ -16,13 +12,13 @@ import com.example.domain.entity.station.Stations
 import com.example.domain.mapper.Mapper
 import com.example.domain.repository.StationRepository
 import com.example.domain.use_case.GetStationsUseCase
-import com.example.testapp.BuildConfig
 import com.example.testapp.R
 import com.uber.rib.core.InteractorBaseComponent
 import com.uber.rib.core.ViewBuilder
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Provides
+import javax.inject.Named
 import javax.inject.Qualifier
 import javax.inject.Scope
 
@@ -55,9 +51,9 @@ class SplashBuilder(dependency: ParentComponent) :
 
     interface ParentComponent {
         fun splashListener(): SplashInteractor.Listener
-        fun okHttpClientFactory(): OkHttpClientFactory
-        fun converterFactory(): ConverterFactory
-        fun callAdapterFactory(): CallAdapterFactory
+
+        @Named("test")
+        fun testNetworkServiceFactory(): NetworkServiceFactory
     }
 
     @dagger.Module
@@ -84,22 +80,10 @@ class SplashBuilder(dependency: ParentComponent) :
             @SplashScope
             @Provides
             @JvmStatic
-            internal fun networkServiceFactory(
-                okHttpClientFactory: OkHttpClientFactory,
-                converterFactory: ConverterFactory,
-                callAdapterFactory: CallAdapterFactory
-            ): NetworkServiceFactory = NetworkServiceFactoryImpl(
-                BuildConfig.BASE_TEST_URL,
-                okHttpClientFactory,
-                converterFactory,
-                callAdapterFactory
-            )
-
-            @SplashScope
-            @Provides
-            @JvmStatic
-            internal fun stationNetworkService(networkServiceFactory: NetworkServiceFactory): StationNetworkService =
-                networkServiceFactory.create(StationNetworkService::class.java)
+            internal fun stationNetworkService(
+                @Named("test")
+                networkServiceFactory: NetworkServiceFactory
+            ): StationNetworkService = networkServiceFactory.create(StationNetworkService::class.java)
 
             @SplashScope
             @Provides

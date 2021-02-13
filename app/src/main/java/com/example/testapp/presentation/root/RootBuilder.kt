@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.testapp.R
 import com.example.testapp.di.NetworkModule
+import com.example.testapp.presentation.root.find_flights.FindFlightsBuilder
 import com.example.testapp.presentation.splash.SplashBuilder
 import com.example.testapp.presentation.splash.SplashInteractor
 import com.uber.rib.core.InteractorBaseComponent
@@ -60,7 +61,13 @@ class RootBuilder(dependency: ParentComponent) :
                 component: Component,
                 view: RootView,
                 interactor: RootInteractor
-            ): RootRouter = RootRouter(view, interactor, component, SplashBuilder(component))
+            ): RootRouter = RootRouter(
+                view,
+                interactor,
+                component,
+                SplashBuilder(component),
+                FindFlightsBuilder(component)
+            )
 
             @RootScope
             @Provides
@@ -76,7 +83,7 @@ class RootBuilder(dependency: ParentComponent) :
         dependencies = [ParentComponent::class]
     )
     interface Component : InteractorBaseComponent<RootInteractor>, BuilderComponent,
-        SplashBuilder.ParentComponent {
+        SplashBuilder.ParentComponent, FindFlightsBuilder.ParentComponent {
 
         @dagger.Component.Builder
         interface Builder {

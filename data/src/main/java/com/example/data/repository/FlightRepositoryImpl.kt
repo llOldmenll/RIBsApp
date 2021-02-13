@@ -18,9 +18,9 @@ class FlightRepositoryImpl(
             request.origin,
             request.destination,
             request.dateOut,
-            request.adults,
-            request.teens,
-            request.children
+            request.passengers.adults,
+            request.passengers.teens,
+            request.passengers.children
         ).map { flightsAvailabilityMapper.map(it) }
     }
 }
