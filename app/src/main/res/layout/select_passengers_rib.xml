@@ -1,6 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.testapp.presentation.root.find_flights.select_passengers.SelectPassengersView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.testapp.presentation.ribs.root.find_flights.select_passengers.SelectPassengersView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
-</com.example.testapp.presentation.root.find_flights.select_passengers.SelectPassengersView>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/vToolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_close"
+        app:title="@string/passengers"
+        app:titleTextColor="@color/white" />
+
+    <View
+        android:id="@+id/toolbar_underline"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/double_divider_size"
+        android:background="@color/accent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vToolbar" />
+
+    <TextView
+        android:id="@+id/adult_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/view_margin_medium"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="@string/adults"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_large_plus"
+        app:layout_constraintBottom_toTopOf="@+id/adult_age"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/vAdultsCount"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/adult_age"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="@string/adult_age"
+        android:textColor="@color/mediumGray"
+        android:textSize="@dimen/text_size_large"
+        app:layout_constraintBottom_toBottomOf="@+id/vAdultsCount"
+        app:layout_constraintStart_toStartOf="@+id/adult_title"
+        app:layout_constraintTop_toBottomOf="@+id/adult_title" />
+
+    <com.example.testapp.presentation.views.Counter
+        android:id="@+id/vAdultsCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_margin_medium"
+        android:layout_marginEnd="@dimen/view_margin_medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_underline" />
+
+    <View
+        android:id="@+id/adults_divider"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/divider_size"
+        android:layout_margin="@dimen/view_margin_medium"
+        android:alpha="0.4"
+        android:background="@color/icon_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vAdultsCount" />
+
+    <TextView
+        android:id="@+id/teen_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/view_margin_medium"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="@string/adults"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_large_plus"
+        app:layout_constraintBottom_toTopOf="@+id/teen_age"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/vTeensCount"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/teen_age"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="@string/adult_age"
+        android:textColor="@color/mediumGray"
+        android:textSize="@dimen/text_size_large"
+        app:layout_constraintBottom_toBottomOf="@+id/vTeensCount"
+        app:layout_constraintStart_toStartOf="@+id/teen_title"
+        app:layout_constraintTop_toBottomOf="@+id/teen_title" />
+
+    <com.example.testapp.presentation.views.Counter
+        android:id="@+id/vTeensCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_margin_medium"
+        android:layout_marginEnd="@dimen/view_margin_medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adults_divider" />
+
+    <View
+        android:id="@+id/teens_divider"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/divider_size"
+        android:layout_margin="@dimen/view_margin_medium"
+        android:alpha="0.4"
+        android:background="@color/icon_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vTeensCount" />
+
+    <TextView
+        android:id="@+id/children_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/view_margin_medium"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="@string/adults"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_large_plus"
+        app:layout_constraintBottom_toTopOf="@+id/children_age"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/vChildrenCount"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/children_age"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="@string/adult_age"
+        android:textColor="@color/mediumGray"
+        android:textSize="@dimen/text_size_large"
+        app:layout_constraintBottom_toBottomOf="@+id/vChildrenCount"
+        app:layout_constraintStart_toStartOf="@+id/children_title"
+        app:layout_constraintTop_toBottomOf="@+id/children_title" />
+
+    <com.example.testapp.presentation.views.Counter
+        android:id="@+id/vChildrenCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/view_margin_medium"
+        android:layout_marginEnd="@dimen/view_margin_medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/teens_divider" />
+
+    <View
+        android:id="@+id/children_divider"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/divider_size"
+        android:layout_margin="@dimen/view_margin_medium"
+        android:alpha="0.4"
+        android:background="@color/icon_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vChildrenCount" />
+
+    <Button
+        android:id="@+id/vConfirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/view_margin_medium"
+        android:layout_marginTop="@dimen/view_margin_min"
+        android:layout_marginEnd="@dimen/view_margin_medium"
+        android:layout_marginBottom="@dimen/view_margin_min"
+        android:backgroundTint="@color/button_selector"
+        android:padding="@dimen/view_padding_min_plus"
+        android:text="@string/confirm"
+        android:textAllCaps="false"
+        android:textColor="@color/primaryDark"
+        android:textSize="@dimen/text_size_large_plus"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</com.example.testapp.presentation.ribs.root.find_flights.select_passengers.SelectPassengersView>

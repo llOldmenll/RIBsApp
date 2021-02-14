@@ -53,7 +53,7 @@ abstract class NetworkModule {
             converterFactory: ConverterFactory,
             callAdapterFactory: CallAdapterFactory,
         ): NetworkServiceFactory = NetworkServiceFactoryImpl(
-            BuildConfig.BASE_TEST_URL,
+            BuildConfig.BASE_URL,
             okHttpClientFactory,
             converterFactory,
             callAdapterFactory

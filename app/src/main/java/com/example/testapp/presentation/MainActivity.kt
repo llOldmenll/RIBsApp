@@ -1,7 +1,7 @@
 package com.example.testapp.presentation
 
 import android.view.ViewGroup
-import com.example.testapp.presentation.root.RootBuilder
+import com.example.testapp.presentation.ribs.root.RootBuilder
 import com.uber.rib.core.RibActivity
 import com.uber.rib.core.ViewRouter
 

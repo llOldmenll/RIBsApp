@@ -1,0 +1,36 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageButton
+        android:id="@+id/vMinus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
+        android:padding="@dimen/view_padding_medium"
+        android:src="@drawable/ic_minus"
+        android:tint="@color/primaryLight"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/vValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/_0"
+        android:paddingTop="@dimen/text_padding_min"
+        android:paddingBottom="@dimen/text_padding_min"
+        android:textColor="@color/primaryDark"
+        android:textColorHint="@color/mediumGray"
+        android:textSize="@dimen/text_size_huge_plus" />
+
+    <ImageButton
+        android:id="@+id/vPlus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
+        android:padding="@dimen/view_padding_medium"
+        android:src="@drawable/ic_plus"
+        android:tint="@color/primaryLight"
+        tools:ignore="ContentDescription" />
+</merge>

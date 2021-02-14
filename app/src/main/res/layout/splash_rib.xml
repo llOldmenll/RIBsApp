@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.testapp.presentation.splash.SplashView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.testapp.presentation.ribs.splash.SplashView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -27,4 +27,4 @@
         app:layout_constraintTop_toBottomOf="@+id/logo"
         app:layout_constraintVertical_bias="0.7" />
 
-</com.example.testapp.presentation.splash.SplashView>
+</com.example.testapp.presentation.ribs.splash.SplashView>

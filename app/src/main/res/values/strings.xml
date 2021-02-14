@@ -13,6 +13,9 @@
     <string name="select_date">Select Date</string>
     <string name="passengers">Passengers</string>
     <string name="lets_go">Let\'s go</string>
+    <string name="search_city_or_airport">Search city or airport</string>
+    <string name="select_your_date">Select your date</string>
+    <string name="confirm">Confirm</string>
 
     <string name="adult">Adult</string>
     <string name="adults">Adults</string>
@@ -26,6 +29,5 @@
     <string name="children">Children</string>
     <string name="child_age">2–11 years</string>
 
-    <string name="search_city_or_airport">Search city or airport</string>
-    <string name="select_your_date">Select your date</string>
+    <string name="_0">0</string>
 </resources>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.testapp.presentation.root.find_flights.FindFlightsView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.testapp.presentation.ribs.root.find_flights.FindFlightsView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -321,7 +321,8 @@
         android:layout_height="match_parent"
         android:background="@color/white_a90"
         android:clickable="true"
-        android:focusable="true">
+        android:focusable="true"
+        android:visibility="gone">
 
         <ProgressBar
             android:layout_width="wrap_content"
@@ -329,4 +330,4 @@
             android:layout_gravity="center" />
     </FrameLayout>
 
-</com.example.testapp.presentation.root.find_flights.FindFlightsView>
+</com.example.testapp.presentation.ribs.root.find_flights.FindFlightsView>

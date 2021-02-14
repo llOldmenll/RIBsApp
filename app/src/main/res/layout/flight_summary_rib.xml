@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.testapp.presentation.root.find_flights.available_flights.flight_summary.FlightSummaryView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.testapp.presentation.ribs.root.find_flights.available_flights.flight_summary.FlightSummaryView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</com.example.testapp.presentation.root.find_flights.available_flights.flight_summary.FlightSummaryView>
+</com.example.testapp.presentation.ribs.root.find_flights.available_flights.flight_summary.FlightSummaryView>

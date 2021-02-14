@@ -18,7 +18,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "BASE_URL", "\"https://www.ryanair.com/api\"")
+        buildConfigField("String", "BASE_URL", "\"https://www.ryanair.com/api/\"")
         buildConfigField("String", "BASE_TEST_URL", "\"https://tripstest.ryanair.com\"")
     }
 
