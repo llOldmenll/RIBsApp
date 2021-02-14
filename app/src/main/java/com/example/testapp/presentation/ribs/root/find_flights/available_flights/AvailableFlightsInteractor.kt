@@ -73,7 +73,7 @@ class AvailableFlightsInteractor :
         override fun onClose() = router.detachCurrentChild()
     }
 
-    interface Listener: BaseListener
+    interface Listener : BaseListener
 
     /**
      * Presenter interface implemented by this RIB's view.
