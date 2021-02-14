@@ -88,10 +88,11 @@ class FindFlightsInteractor :
             getFlightOptionsUseCase.execute(searchFlightsRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .map { it.apply { path = "${provideOrigin()} - ${provideDestination()}" } }
                 .doOnSubscribe { presenter.updateProgressVisibility(true) }
                 .doFinally { presenter.updateProgressVisibility(false) }
                 .subscribe({ router.attachAvailableFlightsScreen(it) }, {
-                    if (it.isNotFoundException()) router.attachAvailableFlightsScreen(FlightOptions())
+                    if (it.isNotFoundException()) router.attachAvailableFlightsScreen(getEmptyOptions())
                     else presenter.showError(it)
                 })
         )
@@ -117,6 +118,9 @@ class FindFlightsInteractor :
     private fun updateSearchAbility() =
         presenter.updateSearchAbilityState(searchFlightsRequest.isValid())
 
+    private fun getEmptyOptions(): FlightOptions =
+        FlightOptions(path = "${provideOrigin()} - ${provideDestination()}")
+
     inner class SelectAirportListener : SelectAirportInteractor.Listener {
         override fun onClose() = router.detachCurrentChild()
 
@@ -140,6 +144,12 @@ class FindFlightsInteractor :
             updateSearchAbility()
         }
     }
+
+    private fun provideOrigin(): String =
+        "${searchFlightsRequest.originCity}(${searchFlightsRequest.originCode})"
+
+    private fun provideDestination(): String =
+        "${searchFlightsRequest.destinationCity}(${searchFlightsRequest.destinationCode})"
 
     inner class SelectPassengersListener : SelectPassengersInteractor.Listener {
         override fun onClose() = router.detachCurrentChild()

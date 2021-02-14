@@ -33,7 +33,7 @@ class AvailableFlightsInteractor :
         super.didBecomeActive(savedInstanceState)
 
         setupRx()
-        updateFlightOptions()
+        initUI()
     }
 
     override fun willResignActive() {
@@ -57,6 +57,11 @@ class AvailableFlightsInteractor :
         )
     }
 
+    private fun initUI() {
+        presenter.updateFlightPath(flightOptions.path)
+        updateFlightOptions()
+    }
+
     private fun updateFlightOptions() = presenter.updateFlightOptions(
         flightOptions.list.sortedBy { it.farePrice }
             .map { flightOptionMapper.map(it) }
@@ -70,6 +75,7 @@ class AvailableFlightsInteractor :
      * Presenter interface implemented by this RIB's view.
      */
     interface AvailableFlightsPresenter {
+        fun updateFlightPath(path: String)
         fun updateFlightOptions(flightOptions: List<FlightOptionVM>)
 
         fun onClose(): Observable<Unit>

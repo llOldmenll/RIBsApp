@@ -40,6 +40,10 @@ class AvailableFlightsView @JvmOverloads constructor(
         }
     }
 
+    override fun updateFlightPath(path: String) {
+        vToolbar.title = path
+    }
+
     override fun updateFlightOptions(flightOptions: List<FlightOptionVM>) {
         availableFlightsAdapter.flightOptions = ArrayList(flightOptions)
         vFlightsNotFound.visibility = if(flightOptions.isEmpty()) VISIBLE else GONE
