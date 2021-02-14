@@ -2,7 +2,11 @@ package com.example.testapp.presentation.ribs.root.find_flights.available_flight
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.example.domain.entity.flight.FlightOption
+import com.example.domain.mapper.Mapper
 import com.example.testapp.R
+import com.example.testapp.entity.FlightSummaryVM
+import com.example.testapp.mapper.FlightOptionToFlightSummariesListVMMapper
 import com.uber.rib.core.InteractorBaseComponent
 import com.uber.rib.core.ViewBuilder
 import dagger.Binds
@@ -12,8 +16,6 @@ import javax.inject.Scope
 
 /**
  * Builder for the {@link FlightSummaryScope}.
- *
- * TODO describe this scope's responsibility as a whole.
  */
 class FlightSummaryBuilder(dependency: ParentComponent) :
     ViewBuilder<FlightSummaryView, FlightSummaryRouter, FlightSummaryBuilder.ParentComponent>(
@@ -26,20 +28,21 @@ class FlightSummaryBuilder(dependency: ParentComponent) :
      * @param parentViewGroup parent view group that this router's view will be added to.
      * @return a new [FlightSummaryRouter].
      */
-    fun build(parentViewGroup: ViewGroup): FlightSummaryRouter {
+    fun build(parentViewGroup: ViewGroup, flightOption: FlightOption): FlightSummaryRouter {
         val view = createView(parentViewGroup)
         val interactor = FlightSummaryInteractor()
         val component = DaggerFlightSummaryBuilder_Component.builder()
             .parentComponent(dependency)
             .view(view)
             .interactor(interactor)
+            .flightOption(flightOption)
             .build()
         return component.flightsummaryRouter()
     }
 
     override fun inflateView(
         inflater: LayoutInflater,
-        parentViewGroup: ViewGroup
+        parentViewGroup: ViewGroup,
     ): FlightSummaryView {
         return inflater.inflate(
             R.layout.flight_summary_rib,
@@ -49,7 +52,7 @@ class FlightSummaryBuilder(dependency: ParentComponent) :
     }
 
     interface ParentComponent {
-        // TODO: Define dependencies required from your parent interactor here.
+        fun flightSummaryListener(): FlightSummaryInteractor.Listener
     }
 
     @dagger.Module
@@ -68,13 +71,17 @@ class FlightSummaryBuilder(dependency: ParentComponent) :
             internal fun router(
                 component: Component,
                 view: FlightSummaryView,
-                interactor: FlightSummaryInteractor
+                interactor: FlightSummaryInteractor,
             ): FlightSummaryRouter {
                 return FlightSummaryRouter(view, interactor, component)
             }
-        }
 
-        // TODO: Create provider methods for dependencies created by this Rib. These should be static.
+            @FlightSummaryScope
+            @Provides
+            @JvmStatic
+            internal fun flightOptionToSummaryMapper(): Mapper<FlightOption, List<FlightSummaryVM>> =
+                FlightOptionToFlightSummariesListVMMapper()
+        }
     }
 
     @FlightSummaryScope
@@ -91,6 +98,9 @@ class FlightSummaryBuilder(dependency: ParentComponent) :
 
             @BindsInstance
             fun view(view: FlightSummaryView): Builder
+
+            @BindsInstance
+            fun flightOption(flightOption: FlightOption): Builder
 
             fun parentComponent(component: ParentComponent): Builder
             fun build(): Component

@@ -31,7 +31,7 @@
         android:id="@+id/vRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:overScrollMode="never"
+        android:overScrollMode="ifContentScrolls"
         android:paddingStart="@dimen/view_padding_min"
         android:paddingEnd="@dimen/view_padding_min"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -41,10 +41,10 @@
 
     <ImageView
         android:id="@+id/vFlightsNotFound"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_not_found"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

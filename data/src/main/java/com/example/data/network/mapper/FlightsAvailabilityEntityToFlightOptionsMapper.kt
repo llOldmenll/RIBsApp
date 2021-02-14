@@ -34,6 +34,8 @@ class FlightsAvailabilityEntityToFlightOptionsMapper :
                 flightOptionsList.add(
                     FlightOption(
                         flightOption.flightNumber ?: "",
+                        provideOrigin(trip),
+                        provideDestination(trip),
                         flightOption.time?.get(0) ?: flightDate.dateOut ?: "",
                         flightOption.time?.get(1) ?: "",
                         flightOption.duration ?: "",
@@ -66,4 +68,9 @@ class FlightsAvailabilityEntityToFlightOptionsMapper :
         updateFarePrice(totalPublishedFare - totalDiscountAmount)
         updateDiscount((totalDiscountAmount * 100 / totalPublishedFare).roundToInt())
     }
+
+    private fun provideOrigin(trip: TripEntity): String = "${trip.originName} (${trip.origin})"
+
+    private fun provideDestination(trip: TripEntity): String =
+        "${trip.destinationName} (${trip.destination})"
 }

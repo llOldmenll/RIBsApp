@@ -1,6 +1,7 @@
 package com.example.testapp.presentation.ribs.root.find_flights.select_passengers
 
 import com.example.domain.entity.request.PassengersRequest
+import com.example.testapp.presentation.ribs.base.BaseListener
 import com.uber.rib.core.Bundle
 import com.uber.rib.core.Interactor
 import com.uber.rib.core.RibInteractor
@@ -60,8 +61,7 @@ class SelectPassengersInteractor :
         )
     }
 
-    interface Listener {
-        fun onClose()
+    interface Listener: BaseListener {
         fun onPassengersSelected(passengers: PassengersRequest)
     }
 

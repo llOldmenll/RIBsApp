@@ -4,6 +4,8 @@ import com.example.domain.entity.flight.FlightOption
 import com.example.domain.entity.flight.FlightOptions
 import com.example.domain.mapper.Mapper
 import com.example.testapp.entity.FlightOptionVM
+import com.example.testapp.presentation.ribs.base.BaseListener
+import com.example.testapp.presentation.ribs.root.find_flights.available_flights.flight_summary.FlightSummaryInteractor
 import com.uber.rib.core.Bundle
 import com.uber.rib.core.Interactor
 import com.uber.rib.core.RibInteractor
@@ -67,9 +69,11 @@ class AvailableFlightsInteractor :
             .map { flightOptionMapper.map(it) }
     )
 
-    interface Listener {
-        fun onClose()
+    inner class FlightSummaryListener : FlightSummaryInteractor.Listener {
+        override fun onClose() = router.detachCurrentChild()
     }
+
+    interface Listener: BaseListener
 
     /**
      * Presenter interface implemented by this RIB's view.

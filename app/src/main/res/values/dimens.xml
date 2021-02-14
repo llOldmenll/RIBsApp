@@ -6,7 +6,7 @@
     <dimen name="view_padding_min">8dp</dimen>
     <dimen name="view_padding_min_plus">12dp</dimen>
     <dimen name="view_padding_medium">16dp</dimen>
-    <dimen name="view_padding_medium_plus">16dp</dimen>
+    <dimen name="view_padding_medium_plus">20dp</dimen>
     <dimen name="view_padding_large">24dp</dimen>
     <dimen name="view_padding_big">32dp</dimen>
     <dimen name="view_padding_big_plus">42dp</dimen>

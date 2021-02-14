@@ -22,12 +22,6 @@ class RootInteractor : Interactor<RootInteractor.RootPresenter, RootRouter>() {
         router.attachSplashScreen()
     }
 
-    override fun willResignActive() {
-        super.willResignActive()
-
-        // TODO: Perform any required clean up here, or delete this method entirely if not needed.
-    }
-
     /**
      * Presenter interface implemented by this RIB's view.
      */

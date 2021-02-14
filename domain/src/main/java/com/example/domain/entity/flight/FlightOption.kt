@@ -2,6 +2,8 @@ package com.example.domain.entity.flight
 
 data class FlightOption(
     val flightNumber: String,
+    val origin: String,
+    val destination: String,
     val dateOut: String,
     val dateIn: String,
     val duration: String,
