@@ -1,7 +1,7 @@
 package com.example.testapp.presentation.ribs.root.find_flights.select_airport
 
 import com.example.domain.entity.station.Stations
-import com.example.testapp.presentation.ribs.root.find_flights.entities.AirPortType
+import com.example.testapp.entity.AirPortType
 import com.uber.rib.core.RibTestBasePlaceholder
 import com.uber.rib.core.InteractorHelper
 

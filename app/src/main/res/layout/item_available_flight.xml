@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/text_margin_micro"
+    android:layout_marginBottom="@dimen/text_margin_micro">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/view_padding_min">
+
+        <View
+            android:id="@+id/vertical_divider"
+            android:layout_width="@dimen/ticket_vertical_divider_size"
+            android:layout_height="0dp"
+            android:background="@color/accent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/vDateOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/view_margin_min"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@+id/vertical_divider"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Mon, 29 Apr 2021" />
+
+        <TextView
+            android:id="@+id/vTimeOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/view_margin_medium"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_large_plus"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/vDateOut"
+            app:layout_constraintTop_toBottomOf="@+id/vDateOut"
+            tools:text="06:05" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/divider_size"
+            android:layout_marginStart="@dimen/view_margin_medium"
+            android:layout_marginEnd="@dimen/view_margin_medium"
+            android:alpha="0.5"
+            android:background="@color/icon_gray"
+            app:layout_constraintBottom_toBottomOf="@+id/vTimeOut"
+            app:layout_constraintEnd_toStartOf="@+id/vTimeIn"
+            app:layout_constraintStart_toEndOf="@+id/vTimeOut"
+            app:layout_constraintTop_toTopOf="@+id/vTimeOut" />
+
+        <ImageView
+            android:id="@+id/plane_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="@dimen/view_padding_min"
+            android:rotation="90"
+            android:src="@drawable/ic_plane"
+            app:layout_constraintBottom_toBottomOf="@+id/vTimeIn"
+            app:layout_constraintEnd_toStartOf="@+id/vTimeIn"
+            app:layout_constraintStart_toEndOf="@+id/vTimeOut"
+            app:layout_constraintTop_toTopOf="@+id/vTimeOut"
+            app:tint="@color/accent"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/vDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/icon_gray"
+            app:layout_constraintEnd_toStartOf="@+id/vTimeIn"
+            app:layout_constraintStart_toEndOf="@+id/vTimeOut"
+            app:layout_constraintTop_toBottomOf="@+id/plane_icon"
+            tools:text="3h 30m" />
+
+        <TextView
+            android:id="@+id/vTimeIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_large_plus"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/vTimeOut"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="09:35" />
+
+        <TextView
+            android:id="@+id/flight_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/flight_number"
+            app:layout_constraintStart_toStartOf="@+id/vDateOut"
+            app:layout_constraintTop_toBottomOf="@+id/vDuration" />
+
+        <TextView
+            android:id="@+id/vFlightNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primaryDark"
+            android:textSize="@dimen/text_size_huge"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/vDateOut"
+            app:layout_constraintTop_toBottomOf="@+id/flight_number"
+            tools:text="BF 3242" />
+
+        <TextView
+            android:id="@+id/vPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primaryDark"
+            android:textSize="@dimen/text_size_huge_plus"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="123$" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

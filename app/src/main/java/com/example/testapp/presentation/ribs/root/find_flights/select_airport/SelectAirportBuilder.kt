@@ -4,13 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.domain.entity.station.Stations
 import com.example.testapp.R
-import com.example.testapp.presentation.ribs.root.find_flights.entities.AirPortType
+import com.example.testapp.entity.AirPortType
 import com.uber.rib.core.InteractorBaseComponent
 import com.uber.rib.core.ViewBuilder
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Provides
-import javax.inject.Qualifier
 import javax.inject.Scope
 
 /**
@@ -106,8 +105,4 @@ class SelectAirportBuilder(dependency: ParentComponent) :
     @Scope
     @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
     internal annotation class SelectAirportScope
-
-    @Qualifier
-    @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
-    internal annotation class SelectAirportInternal
 }

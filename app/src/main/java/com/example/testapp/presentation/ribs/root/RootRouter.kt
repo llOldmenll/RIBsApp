@@ -14,32 +14,29 @@ class RootRouter(
     interactor: RootInteractor,
     component: RootBuilder.Component,
     private val splashBuilder: SplashBuilder,
-    private val findFlightsBuilder: FindFlightsBuilder
+    private val findFlightsBuilder: FindFlightsBuilder,
 ) : ViewRouter<RootView, RootInteractor, RootBuilder.Component>(view, interactor, component) {
 
     private var currentChild: Router<*, *>? = null
 
-    fun attachSplashScreen() {
-        currentChild = splashBuilder.build(view).let {
-            attachChild(it)
-            view.addView(it.view)
-            it
-        }
-    }
+    fun attachSplashScreen() = attachCurrentChild(splashBuilder.build(view))
 
-    fun attachFindFlightsScreen(stations: Stations) {
-        currentChild = findFlightsBuilder.build(view, stations).let {
-            attachChild(it)
-            view.addView(it.view)
-            it
-        }
-    }
+    fun attachFindFlightsScreen(stations: Stations) =
+        attachCurrentChild(findFlightsBuilder.build(view, stations))
 
     fun detachCurrentChild() {
         currentChild?.let {
             detachChild(it)
             if (it is ViewRouter<*, *, *>) view.removeView(it.view)
             currentChild = null
+        }
+    }
+
+    private fun attachCurrentChild(child: Router<*, *>?) {
+        currentChild = child.let {
+            attachChild(it)
+            if (it is ViewRouter<*, *, *>) view.addView(it.view)
+            it
         }
     }
 

@@ -8,7 +8,6 @@ import com.uber.rib.core.ViewBuilder
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Provides
-import javax.inject.Qualifier
 import javax.inject.Scope
 
 /**
@@ -105,8 +104,4 @@ class FlightSummaryBuilder(dependency: ParentComponent) :
     @Scope
     @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
     internal annotation class FlightSummaryScope
-
-    @Qualifier
-    @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
-    internal annotation class FlightSummaryInternal
 }

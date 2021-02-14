@@ -2,19 +2,21 @@ package com.example.testapp.presentation.ribs.root.find_flights.available_flight
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.example.domain.entity.flight.FlightOption
+import com.example.domain.entity.flight.FlightOptions
+import com.example.domain.mapper.Mapper
 import com.example.testapp.R
+import com.example.testapp.entity.FlightOptionVM
+import com.example.testapp.mapper.FlightOptionToFlightOptionVMMapper
 import com.uber.rib.core.InteractorBaseComponent
 import com.uber.rib.core.ViewBuilder
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Provides
-import javax.inject.Qualifier
 import javax.inject.Scope
 
 /**
- * Builder for the {@link AvailableFlightsScope}.
- *
- * TODO describe this scope's responsibility as a whole.
+ * Builder for the {@link AvailableFlightsScope}..
  */
 class AvailableFlightsBuilder(dependency: ParentComponent) :
     ViewBuilder<AvailableFlightsView, AvailableFlightsRouter, AvailableFlightsBuilder.ParentComponent>(
@@ -27,20 +29,21 @@ class AvailableFlightsBuilder(dependency: ParentComponent) :
      * @param parentViewGroup parent view group that this router's view will be added to.
      * @return a new [AvailableFlightsRouter].
      */
-    fun build(parentViewGroup: ViewGroup): AvailableFlightsRouter {
+    fun build(parentViewGroup: ViewGroup, flightOptions: FlightOptions): AvailableFlightsRouter {
         val view = createView(parentViewGroup)
         val interactor = AvailableFlightsInteractor()
         val component = DaggerAvailableFlightsBuilder_Component.builder()
             .parentComponent(dependency)
             .view(view)
             .interactor(interactor)
+            .flightOptions(flightOptions)
             .build()
         return component.availableflightsRouter()
     }
 
     override fun inflateView(
         inflater: LayoutInflater,
-        parentViewGroup: ViewGroup
+        parentViewGroup: ViewGroup,
     ): AvailableFlightsView {
         return inflater.inflate(
             R.layout.available_flights_rib,
@@ -50,7 +53,7 @@ class AvailableFlightsBuilder(dependency: ParentComponent) :
     }
 
     interface ParentComponent {
-        // TODO: Define dependencies required from your parent interactor here.
+        fun availableFlightsListener(): AvailableFlightsInteractor.Listener
     }
 
     @dagger.Module
@@ -69,13 +72,17 @@ class AvailableFlightsBuilder(dependency: ParentComponent) :
             internal fun router(
                 component: Component,
                 view: AvailableFlightsView,
-                interactor: AvailableFlightsInteractor
+                interactor: AvailableFlightsInteractor,
             ): AvailableFlightsRouter {
                 return AvailableFlightsRouter(view, interactor, component)
             }
-        }
 
-        // TODO: Create provider methods for dependencies created by this Rib. These should be static.
+            @AvailableFlightsScope
+            @Provides
+            @JvmStatic
+            internal fun flightOptionMapper(): Mapper<FlightOption, FlightOptionVM> =
+                FlightOptionToFlightOptionVMMapper()
+        }
     }
 
     @AvailableFlightsScope
@@ -93,6 +100,9 @@ class AvailableFlightsBuilder(dependency: ParentComponent) :
             @BindsInstance
             fun view(view: AvailableFlightsView): Builder
 
+            @BindsInstance
+            fun flightOptions(flightOptions: FlightOptions): Builder
+
             fun parentComponent(component: ParentComponent): Builder
             fun build(): Component
         }
@@ -105,8 +115,4 @@ class AvailableFlightsBuilder(dependency: ParentComponent) :
     @Scope
     @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
     internal annotation class AvailableFlightsScope
-
-    @Qualifier
-    @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
-    internal annotation class AvailableFlightsInternal
 }

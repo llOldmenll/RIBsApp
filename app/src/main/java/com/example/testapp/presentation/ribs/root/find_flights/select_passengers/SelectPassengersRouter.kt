@@ -10,8 +10,7 @@ class SelectPassengersRouter(
     interactor: SelectPassengersInteractor,
     component: SelectPassengersBuilder.Component,
 ) : ViewRouter<SelectPassengersView, SelectPassengersInteractor, SelectPassengersBuilder.Component>(
-    view,
-    interactor,
-    component) {
+    view, interactor, component) {
+
     override fun handleBackPress(): Boolean = interactor.handleBackPress()
 }

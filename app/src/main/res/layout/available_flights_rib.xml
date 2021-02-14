@@ -1,6 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.example.testapp.presentation.ribs.root.find_flights.available_flights.AvailableFlightsView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/lightGray">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/vToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_back"
+        app:title="@string/flight_options"
+        app:titleTextColor="@color/white" />
+
+    <View
+        android:id="@+id/toolbar_underline"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/double_divider_size"
+        android:background="@color/accent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vToolbar" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/vRecycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:overScrollMode="never"
+        android:paddingStart="@dimen/view_padding_min"
+        android:paddingEnd="@dimen/view_padding_min"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_underline" />
+
+    <ImageView
+        android:id="@+id/vFlightsNotFound"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_not_found"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_underline"
+        app:tint="@color/accent"
+        tools:ignore="ContentDescription" />
 
 </com.example.testapp.presentation.ribs.root.find_flights.available_flights.AvailableFlightsView>

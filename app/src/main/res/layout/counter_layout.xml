@@ -16,6 +16,7 @@
         android:id="@+id/vValue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:hint="@string/_0"
         android:paddingTop="@dimen/text_padding_min"
         android:paddingBottom="@dimen/text_padding_min"

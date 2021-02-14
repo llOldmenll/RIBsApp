@@ -25,7 +25,7 @@
     <dimen name="text_size_large">18sp</dimen>
     <dimen name="text_size_large_plus">20sp</dimen>
     <dimen name="text_size_huge">24sp</dimen>
-    <dimen name="text_size_huge_plus">36sp</dimen>
+    <dimen name="text_size_huge_plus">28sp</dimen>
     <dimen name="text_size_48">48sp</dimen>
 
     <dimen name="text_margin_micro">4dp</dimen>
@@ -58,4 +58,5 @@
     <dimen name="corner_radius">16dp</dimen>
 
     <dimen name="dashed_line_width">3dp</dimen>
+    <dimen name="ticket_vertical_divider_size">4dp</dimen>
 </resources>

@@ -1,35 +1,78 @@
 package com.example.testapp.presentation.ribs.root.find_flights.available_flights
 
+import com.example.domain.entity.flight.FlightOption
+import com.example.domain.entity.flight.FlightOptions
+import com.example.domain.mapper.Mapper
+import com.example.testapp.entity.FlightOptionVM
 import com.uber.rib.core.Bundle
 import com.uber.rib.core.Interactor
 import com.uber.rib.core.RibInteractor
+import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 /**
  * Coordinates Business Logic for [AvailableFlightsScope].
- *
- * TODO describe the logic of this scope.
  */
 @RibInteractor
-class AvailableFlightsInteractor : Interactor<AvailableFlightsInteractor.AvailableFlightsPresenter, AvailableFlightsRouter>() {
+class AvailableFlightsInteractor :
+    Interactor<AvailableFlightsInteractor.AvailableFlightsPresenter, AvailableFlightsRouter>() {
 
-  @Inject
-  lateinit var presenter: AvailableFlightsPresenter
+    @Inject
+    lateinit var presenter: AvailableFlightsPresenter
+    @Inject
+    lateinit var flightOptions: FlightOptions
+    @Inject
+    lateinit var ribListener: Listener
+    @Inject
+    lateinit var flightOptionMapper: Mapper<FlightOption, FlightOptionVM>
 
-  override fun didBecomeActive(savedInstanceState: Bundle?) {
-    super.didBecomeActive(savedInstanceState)
+    private val compositeDisposable = CompositeDisposable()
 
-    // TODO: Add attachment logic here (RxSubscriptions, etc.).
-  }
+    override fun didBecomeActive(savedInstanceState: Bundle?) {
+        super.didBecomeActive(savedInstanceState)
 
-  override fun willResignActive() {
-    super.willResignActive()
+        setupRx()
+        updateFlightOptions()
+    }
 
-    // TODO: Perform any required clean up here, or delete this method entirely if not needed.
-  }
+    override fun willResignActive() {
+        compositeDisposable.clear()
+        super.willResignActive()
+    }
 
-  /**
-   * Presenter interface implemented by this RIB's view.
-   */
-  interface AvailableFlightsPresenter
+    override fun handleBackPress(): Boolean {
+        ribListener.onClose()
+        return true
+    }
+
+    private fun setupRx() {
+        compositeDisposable.addAll(
+            presenter.onClose().subscribe { handleBackPress() },
+            presenter.onFlightOptionSelected().subscribe { optionVM ->
+                flightOptions.list.firstOrNull { option ->
+                    option.flightNumber == optionVM.flightNumber
+                }?.let { router.attachFlightSummary(it) }
+            }
+        )
+    }
+
+    private fun updateFlightOptions() = presenter.updateFlightOptions(
+        flightOptions.list.sortedBy { it.farePrice }
+            .map { flightOptionMapper.map(it) }
+    )
+
+    interface Listener {
+        fun onClose()
+    }
+
+    /**
+     * Presenter interface implemented by this RIB's view.
+     */
+    interface AvailableFlightsPresenter {
+        fun updateFlightOptions(flightOptions: List<FlightOptionVM>)
+
+        fun onClose(): Observable<Unit>
+        fun onFlightOptionSelected(): Observable<FlightOptionVM>
+    }
 }

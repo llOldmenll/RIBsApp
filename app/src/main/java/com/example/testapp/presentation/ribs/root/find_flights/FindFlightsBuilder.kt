@@ -13,6 +13,8 @@ import com.example.domain.mapper.Mapper
 import com.example.domain.repository.FlightRepository
 import com.example.domain.use_case.GetFlightOptionsUseCase
 import com.example.testapp.R
+import com.example.testapp.presentation.ribs.root.find_flights.available_flights.AvailableFlightsBuilder
+import com.example.testapp.presentation.ribs.root.find_flights.available_flights.AvailableFlightsInteractor
 import com.example.testapp.presentation.ribs.root.find_flights.select_airport.SelectAirportBuilder
 import com.example.testapp.presentation.ribs.root.find_flights.select_airport.SelectAirportInteractor
 import com.example.testapp.presentation.ribs.root.find_flights.select_passengers.SelectPassengersBuilder
@@ -23,7 +25,6 @@ import dagger.Binds
 import dagger.BindsInstance
 import dagger.Provides
 import javax.inject.Named
-import javax.inject.Qualifier
 import javax.inject.Scope
 
 /**
@@ -88,7 +89,9 @@ class FindFlightsBuilder(dependency: ParentComponent) :
                     interactor,
                     component,
                     SelectAirportBuilder(component),
-                    SelectPassengersBuilder(component))
+                    SelectPassengersBuilder(component),
+                    AvailableFlightsBuilder(component)
+                )
             }
 
             @FindFlightsScope
@@ -134,6 +137,13 @@ class FindFlightsBuilder(dependency: ParentComponent) :
             internal fun selectPassengersListener(
                 interactor: FindFlightsInteractor,
             ): SelectPassengersInteractor.Listener = interactor.SelectPassengersListener()
+
+            @FindFlightsScope
+            @Provides
+            @JvmStatic
+            internal fun availableFlightsListener(
+                interactor: FindFlightsInteractor,
+            ): AvailableFlightsInteractor.Listener = interactor.AvailableFlightsListener()
         }
     }
 
@@ -143,7 +153,8 @@ class FindFlightsBuilder(dependency: ParentComponent) :
         dependencies = [ParentComponent::class]
     )
     interface Component : InteractorBaseComponent<FindFlightsInteractor>, BuilderComponent,
-        SelectAirportBuilder.ParentComponent, SelectPassengersBuilder.ParentComponent {
+        SelectAirportBuilder.ParentComponent, SelectPassengersBuilder.ParentComponent,
+        AvailableFlightsBuilder.ParentComponent {
 
         @dagger.Component.Builder
         interface Builder {
@@ -168,8 +179,4 @@ class FindFlightsBuilder(dependency: ParentComponent) :
     @Scope
     @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
     internal annotation class FindFlightsScope
-
-    @Qualifier
-    @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
-    internal annotation class FindFlightsInternal
 }

@@ -6,7 +6,6 @@ import com.example.data.entity.flight.TripEntity
 import com.example.domain.entity.flight.FlightOption
 import com.example.domain.entity.flight.FlightOptions
 import com.example.domain.mapper.Mapper
-import com.example.domain.utils.toFormattedDate
 import com.example.domain.utils.toShortString
 import kotlin.math.roundToInt
 
@@ -37,7 +36,8 @@ class FlightsAvailabilityEntityToFlightOptionsMapper :
                         flightOption.flightNumber ?: "",
                         provideOrigin(trip),
                         provideDestination(trip),
-                        provideFlightDate(flightOption.time?.first(), flightDate.dateOut),
+                        flightOption.time?.get(0) ?: flightDate.dateOut ?: "",
+                        flightOption.time?.get(1) ?: "",
                         flightOption.duration ?: "",
                         flightOption.regularFare?.fareClass ?: "",
                         farePrice,
@@ -55,7 +55,7 @@ class FlightsAvailabilityEntityToFlightOptionsMapper :
     private fun updateFarePriceAndDiscount(
         fare: List<FareEntity>,
         updateFarePrice: (Double) -> Unit,
-        updateDiscount: (Int) -> Unit
+        updateDiscount: (Int) -> Unit,
     ) {
         var totalPublishedFare = 0.0
         var totalDiscountAmount = 0.0
@@ -73,7 +73,4 @@ class FlightsAvailabilityEntityToFlightOptionsMapper :
 
     private fun provideDestination(trip: TripEntity): String =
         "${trip.destinationName}, ${trip.destination}"
-
-    private fun provideFlightDate(detailed: String?, simplified: String?): String =
-        detailed?.toFormattedDate() ?: simplified?.toFormattedDate() ?: ""
 }

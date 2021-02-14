@@ -1,16 +1,18 @@
 package com.example.testapp.presentation.ribs.root.find_flights
 
+import com.example.data.network.extensions.isNotFoundException
+import com.example.domain.entity.flight.FlightOptions
 import com.example.domain.entity.request.GetAvailableFlightsRequest
 import com.example.domain.entity.request.PassengersRequest
 import com.example.domain.entity.station.StationDescription
 import com.example.domain.use_case.GetFlightOptionsUseCase
 import com.example.domain.utils.toDate
 import com.example.domain.utils.toFormattedDate
-import com.example.testapp.presentation.ribs.root.find_flights.entities.AirPortType
-import com.example.testapp.presentation.ribs.root.find_flights.entities.AirPortType.*
+import com.example.testapp.presentation.ribs.root.find_flights.available_flights.AvailableFlightsInteractor
+import com.example.testapp.entity.AirPortType
+import com.example.testapp.entity.AirPortType.*
 import com.example.testapp.presentation.ribs.root.find_flights.select_airport.SelectAirportInteractor
 import com.example.testapp.presentation.ribs.root.find_flights.select_passengers.SelectPassengersInteractor
-import com.jakewharton.rxrelay2.BehaviorRelay
 import com.uber.rib.core.Bundle
 import com.uber.rib.core.Interactor
 import com.uber.rib.core.RibInteractor
@@ -31,7 +33,6 @@ class FindFlightsInteractor :
 
     @Inject
     lateinit var presenter: FindFlightsPresenter
-
     @Inject
     lateinit var getFlightOptionsUseCase: GetFlightOptionsUseCase
 
@@ -89,7 +90,10 @@ class FindFlightsInteractor :
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { presenter.updateProgressVisibility(true) }
                 .doFinally { presenter.updateProgressVisibility(false) }
-                .subscribe({ router.attachAvailableFlightsScreen(it) }, { presenter.showError(it) })
+                .subscribe({ router.attachAvailableFlightsScreen(it) }, {
+                    if (it.isNotFoundException()) router.attachAvailableFlightsScreen(FlightOptions())
+                    else presenter.showError(it)
+                })
         )
     }
 
@@ -145,6 +149,10 @@ class FindFlightsInteractor :
             updatePassengers()
             updateSearchAbility()
         }
+    }
+
+    inner class AvailableFlightsListener : AvailableFlightsInteractor.Listener {
+        override fun onClose() = router.detachCurrentChild()
     }
 
     /**

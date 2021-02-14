@@ -12,7 +12,6 @@ import com.uber.rib.core.ViewBuilder
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Provides
-import javax.inject.Qualifier
 import javax.inject.Scope
 
 /**
@@ -105,8 +104,4 @@ class RootBuilder(dependency: ParentComponent) :
     @Scope
     @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
     internal annotation class RootScope
-
-    @Qualifier
-    @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
-    internal annotation class RootInternal
 }
